@@ -1,0 +1,10 @@
+TO RUN THE ALGORITHM, ONE CAN TYPE THE COMMAND,
+python /path/to/file main.py
+
+In case of error, “Invalid list format”, open input.txt file in the corresponding folder and remove the last (empty) line from the text and save it. 
+
+The output for given input is as follows:
+
+
+================================THE END==================================
+
