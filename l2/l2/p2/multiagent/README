@@ -1,0 +1,15 @@
+1. Multi-agent search : You are required to implement multi-agent search techniques (minimax and minimax with alpha-beta pruning)
+   in this module
+
+2. You will be implementing the algorithm in 'controller2.py'. A function is defined in the file as :
+		def musketeerMove(board):
+         	
+		You are given the board state as an input argument. Your task is to compute the best possible move for
+		musketeer taking this board as an input state.
+
+        Your output should be in the following format:
+		[[x1,y1],[x2,y2]]
+     
+        The above output is interpreted as the musketeer at board position (x1,y1) is to be moved to (x2,y2).
+		
+At the time of submission, change controller2.py to rollNumber.py and submit this script only

@@ -1,0 +1,17 @@
+To compile the code:
+gcc  hill_climbing.c -lm -o mysolution 
+To run the code:
+./mysolution input.txt output.txt
+
+-lm included because sometimes the ceil function of the math library shows error in Ubuntu. (works fine in windows without it)
+
+==============================
+We have modeled the bids as states irrespective of the company id.
+bid1 and bid2 will be neighbours if bid2 doesn't have any coal block same as bid1.
+We have chosen to go with the algorithm with random restarts.
+We pick the initial start state based on the "goodness" of a bid.
+Goodness of a bid is defined as the bid value divided by the number of coal blocks company is bidding for.
+And to give preferences to better bids while randomly picking, we've taken help from Cumulative distribution.
+The "pick_random" function picks next bid, and the cumulative goodness is stored in the total_goodness array.
+We stop the hill climbing algorithm 3 seconds before the allowed time to write the result to the output file in time.
+==============================
