@@ -1,3 +1,6 @@
+#include <ctime>
+#include <cstdlib>
+#include <cstdio>
 #include <cmath>
 #include <string>
 #include <algorithm>
@@ -134,6 +137,13 @@ node **create_copy(){
 	}
 	return bn;
 }
+void pa(int *A,int n){
+	cout<<"array elements are:"<<endl;
+	for(int i=0;i<n;i++)
+		cout<<A[i]<< " ";
+	cout<<endl;
+}
+
 
 int *full_mask;
 void num_to_array(unsigned int current_mask){
@@ -152,12 +162,6 @@ bool is_sane(int *A,int *B){
 	return true;
 }
 
-void pa(int *A,int n){
-	cout<<"array elements are:"<<endl;
-	for(int i=0;i<n;i++)
-		cout<<A[i]<< " ";
-	cout<<endl;
-}
 
 bool generate_next(unsigned int current_mask,int *original_mask){
 	num_to_array(current_mask);
@@ -185,17 +189,28 @@ void set_mask(query q,node **g,int *mask,bool variable_included){
 }
 
 double evaluate(node **bn){
-	double answer=0;
-	//cout<<"evaluate called"<<endl;
+	double answer=1;
+	//cout<<"mask:";
+	//pa(full_mask,size);
 	for(int i=0;i<size;i++){
 		node *current=bn[i];
 		int final_index=0;
-		double probability=1;
+		double probability;
+		//cout<<"for "<<current->rank<<endl;
+		//cout<<"parents are:";
 		for(int j=0;j<current->parents.size();j++){
-			final_index=(final_index<<full_mask[current->parents[j]->rank]);
-			probability*=current->values[final_index];
+			//cout<<current->parents[j]->rank<<" ";
+			final_index+=full_mask[current->parents[j]->rank];
+			final_index=(final_index<<1);
 		}
-		answer+=probability;
+		//cout<<endl;
+		//cout<<"index is:"<<final_index<<endl;
+		final_index=(final_index>>1);
+		probability=current->values[final_index];
+		if(full_mask[current->rank]==1)
+			answer*=probability;
+		else 
+			answer*=(1-probability);
 	}
 	return answer;
 }
@@ -213,16 +228,18 @@ double variable_elimination(query &q){
 	set_mask(q,bn,given_variable_mask,true);
 	double answer1=0;
 	while(count<(1<<size)){
-		if(generate_next(count,given_variable_mask))
+		if(generate_next(count,given_variable_mask)){
 			answer1+= evaluate(bn);
+		}
 		count++;
 	}
 	set_mask(q,bn,given_variable_mask,false);
 	double answer2=0;
 	count=0;
 	while(count<(1<<size)){
-		if(generate_next(count,given_variable_mask))
+		if(generate_next(count,given_variable_mask)){
 			answer2+= evaluate(bn);
+		}
 		count++;
 	}
 	delete bn;
@@ -233,21 +250,15 @@ double variable_elimination(query &q){
 
 void rejection_sampling(query &q){ 
  
-    //implement the function here. 
     node **bn=create_copy(); 
-        toposort(bn); 
+    toposort(bn); 
     sort(bn,bn+size,cmp); 
-    //print_graph(bn); 
-    //printVector(q.variable); 
-    //printVector(q.evidence); 
- 
-     
     int total_samples=0; 
     int favorable_samples=0; 
  
  
  
-    while(total_samples<100000){ 
+    while(total_samples<4000){ 
  
  
      
@@ -375,23 +386,34 @@ void solve (string &s){
 		}
 	}
 	if(s[0]=='v' ){
-		cout<<"this is the probability=";
+		//cout<<"this is the probability=";
 		cout<<(variable_elimination(q))<<endl;
 	}
 	else {
-		cout<<"calling rejection sampling"<<endl;
+		//cout<<"calling rejection sampling"<<endl;
 		rejection_sampling(q);
 	}
 }
 
 
 int main(){
+	srand(time(NULL));
 	ifstream in;
 	ifstream query_file;
-	ofstream out;
-	in.open("b3.txt");
-	query_file.open("q3.txt");
-	out.open("out.txt");
+	string bn_file_name;
+	cin>>bn_file_name;
+	in.open(bn_file_name.c_str());
+	if(in==NULL){
+		cout<<"Input file is not found"<<endl;
+		return 0;
+	}
+	string query_file_name;
+	cin>>query_file_name;
+	query_file.open(query_file_name.c_str());
+	if(query_file==NULL){
+		cout<<"Input file is not found"<<endl;
+		return 0;
+	}
 	int n;
 	in>>n;
 	size=n;
