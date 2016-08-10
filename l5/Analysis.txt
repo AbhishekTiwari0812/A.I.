@@ -1,0 +1,34 @@
+To get the answers of the queries, first the variables and evidences are converted in one query (Joint probability) and then we find the value of the query which involves only the evidence variable using the probablity found in the previous query (by joining).
+For example, if query is P(1,2 | ~ 3,4)
+we find, P(1,2,~3,4) and then P(~3,4) by joining the hidden varible in the table of P(1,2,3,4).
+
+The output for the queries provided in the files are...
+===========
+(All the queries are answered using variable elimination)
+for q1.....
+	0.25
+	0.5
+	0.5
+	0.5
+	0.03125
+	0.0625
+for q2.....
+	0.16
+	0.2
+	0.32
+	0.64
+	0.00512
+	0.01728
+for q3.....
+	0.0690001
+	0.3
+	0.477757
+	0.9
+	0.000297655
+	0.00148656
+	-6.85995e-11
+	-6.85995e-11
+	0.0766668
+============================================
+Minus values appear because of the round off errors. (-6e-11 is very close to zero)
+=======================================================================================================
